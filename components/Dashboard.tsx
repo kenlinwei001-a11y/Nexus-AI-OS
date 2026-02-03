@@ -1,4 +1,5 @@
 
+
 import React, { useState, useMemo } from 'react';
 import { Card, Badge, Button, getStatusColor } from './UI';
 import { StatusLevel } from '../types';
@@ -27,7 +28,7 @@ interface TraceNode {
   label: string;
   type: string;
   icon: any;
-  status: 'RISK' | 'UNCERTAIN' | 'NORMAL';
+  status: 'RISK' | 'UNCERTAIN' | 'NORMAL' | 'PROCESSING' | 'VERIFIED';
   timestamp: string;
   description: string;
   metrics: { label: string; value: string; trend?: 'up' | 'down' }[];
@@ -213,7 +214,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
           trendData: [{ time: 'Now', value: 50 }],
           traceNodes: [],
           initialMessages: [{ id: 1, role: 'AGENT', content: '系统正在聚合该决策流的实时数据...', time: 'Now' }]
-      };
+      } as StreamDetailData;
   }, [selectedDecision]);
 
   // Reset/Init state when entering a decision detail
@@ -249,7 +250,12 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
                   </div>
                   <h3 className="font-medium text-white text-lg">{node.label}</h3>
               </div>
-              <Badge status={node.status === 'RISK' ? StatusLevel.RISK : node.status === 'NORMAL' ? StatusLevel.VERIFIED : StatusLevel.UNCERTAIN} />
+              <Badge status={
+                  node.status === 'RISK' ? StatusLevel.RISK : 
+                  (node.status === 'NORMAL' || node.status === 'VERIFIED') ? StatusLevel.VERIFIED : 
+                  node.status === 'PROCESSING' ? StatusLevel.PROCESSING : 
+                  StatusLevel.UNCERTAIN
+              } />
           </div>
           
           <div className="text-slate-400 leading-relaxed mb-6 text-sm">
@@ -262,7 +268,6 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
                       <div className="text-xs text-slate-500 uppercase mb-1">{m.label}</div>
                       <div className="flex items-end gap-2">
                           <span className="font-mono font-medium text-slate-200 text-xl">{m.value}</span>
-                          {/* Randomly assign trend if not present for generic fallback */}
                           <span className="text-slate-500 text-xs mb-1">
                              {m.trend === 'up' ? '↑' : m.trend === 'down' ? '↓' : ''}
                           </span>
@@ -506,7 +511,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
                                                <div className={`w-10 h-10 rounded-full border-2 flex items-center justify-center bg-slate-900 z-10 transition-all ${
                                                    selectedTraceNode?.id === node.id
                                                     ? 'border-cyan-500 text-cyan-500 shadow-[0_0_15px_rgba(6,182,212,0.4)]'
-                                                    : (node.status === 'RISK' ? 'border-red-500 text-red-500' : node.status === 'NORMAL' ? 'border-emerald-500 text-emerald-500' : 'border-slate-600 text-slate-500')
+                                                    : (node.status === 'RISK' ? 'border-red-500 text-red-500' : (node.status === 'NORMAL' || node.status === 'VERIFIED') ? 'border-emerald-500 text-emerald-500' : node.status === 'PROCESSING' ? 'border-blue-500 text-blue-500' : 'border-slate-600 text-slate-500')
                                                }`}>
                                                    <node.icon className="w-5 h-5" />
                                                </div>

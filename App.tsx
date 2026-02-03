@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { PageView } from './types';
 import { Dashboard } from './components/Dashboard';
 import { OntologyView } from './components/OntologyView';
-// ProcessDesigner is now embedded in AgentCenter
 import { AgentCenter } from './components/AgentCenter';
 import { SimulationEngine } from './components/SimulationEngine';
 import { KnowledgeBase } from './components/KnowledgeBase';
@@ -16,7 +15,7 @@ const App: React.FC = () => {
   // Navigation Items
   const navItems = [
     { id: 'DASHBOARD', label: '决策中枢', icon: LayoutDashboard },
-    { id: 'ONTOLOGY_LIST', label: '业务实体', icon: Database }, // Renamed from 业务本体
+    { id: 'ONTOLOGY_LIST', label: '业务实体', icon: Database }, 
     { id: 'AGENT_LIST', label: '智能体中心', icon: Bot },
     { id: 'SIMULATION_LIST', label: '推演模拟', icon: LineChart },
     { id: 'KNOWLEDGE_BASE', label: '知识与算法', icon: BookOpen },
@@ -29,7 +28,6 @@ const App: React.FC = () => {
       case 'AGENT_LIST': return <AgentCenter onNavigate={setCurrentView} />;
       case 'SIMULATION_LIST': return <SimulationEngine />;
       case 'KNOWLEDGE_BASE': return <KnowledgeBase />;
-      // Fallback for sub-routes if needed, though AgentCenter handles its own sub-views
       default: return <Dashboard onNavigate={setCurrentView} />;
     }
   };
@@ -41,7 +39,7 @@ const App: React.FC = () => {
       <aside className="w-64 border-r border-slate-800 bg-[#0f172a] flex flex-col z-20 shadow-2xl">
         <div className="h-16 flex items-center px-6 border-b border-slate-800 bg-slate-900">
           <div className="w-6 h-6 bg-cyan-500 rounded-sm mr-3 shadow-[0_0_15px_rgba(6,182,212,0.6)]"></div>
-          <span className="font-bold text-lg tracking-tight text-white">NEXUS <span className="text-cyan-400 font-light">AI-OS</span></span>
+          <span className="font-bold text-lg tracking-tight text-white">NEXUS <span className="text-cyan-400 font-light">智能决策 OS</span></span>
         </div>
 
         <nav className="flex-1 py-6 space-y-1 px-3">
@@ -73,7 +71,7 @@ const App: React.FC = () => {
           <div>v2.4.1-build.1043</div>
           <div className="flex items-center gap-2 mt-2">
             <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-            System Operational
+            系统运行正常
           </div>
         </div>
       </aside>
@@ -84,10 +82,10 @@ const App: React.FC = () => {
         <header className="h-16 border-b border-slate-800 bg-[#0f172a]/80 backdrop-blur flex items-center justify-between px-6 sticky top-0 z-10">
            {/* Breadcrumbs / Title */}
            <div className="flex items-center gap-2 text-sm text-slate-400">
-              <span className="hover:text-slate-200 cursor-pointer">Platform</span>
+              <span className="hover:text-slate-200 cursor-pointer">平台域</span>
               <span className="text-slate-600">/</span>
               <span className="text-slate-200 font-medium">
-                {navItems.find(n => n.id === currentView)?.label || 'Agent Center'}
+                {navItems.find(n => n.id === currentView)?.label || '智能体中心'}
               </span>
            </div>
 
